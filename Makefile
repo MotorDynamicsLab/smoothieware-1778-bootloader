@@ -2,7 +2,7 @@
 #
 #
 
-APPBAUD  = 1000000
+APPBAUD  = 115200
 
 PROJECT  = DFU-Bootloader
 
@@ -22,8 +22,8 @@ OUTDIR   = build
 
 OSRC     =
 
-NXPSRC   = $(shell find CMSISv2p00_LPC17xx/ LPC17xxLib/ -name '*.c')
-NXPO     = $(patsubst %.c,$(OUTDIR)/%.o,$(notdir $(NXPSRC))) $(OUTDIR)/system_LPC17xx.o
+NXPSRC   = $(shell find CMSISv2p00_LPC17xx/ LPC177x_8xLib/ -name '*.c')
+NXPO     = $(patsubst %.c,$(OUTDIR)/%.o,$(notdir $(NXPSRC))) $(OUTDIR)/system_LPC177x_8x.o
 
 FATFSSRC = $(shell find fatfs/ -name '*.c')
 FATFSO   = $(patsubst %.c,$(OUTDIR)/%.o,$(notdir $(FATFSSRC)))
@@ -53,7 +53,7 @@ RM       = rm -f
 OPTIMIZE = s
 
 #DEBUG_MESSAGES
-CDEFS    = MAX_URI_LENGTH=512 __LPC17XX__ USB_DEVICE_ONLY APPBAUD=$(APPBAUD)
+CDEFS    = MAX_URI_LENGTH=512 __LPC177X_8X__ USB_DEVICE_ONLY APPBAUD=$(APPBAUD)
 
 FLAGS    = -O$(OPTIMIZE) -mcpu=$(MCU) -mthumb -mthumb-interwork -mlong-calls -ffunction-sections -fdata-sections -Wall -g -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 FLAGS   += $(patsubst %,-I%,$(INC))
