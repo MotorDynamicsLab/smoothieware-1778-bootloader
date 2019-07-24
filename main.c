@@ -129,8 +129,8 @@ void check_sd_firmware(void)
 {
 	const char *firmware_file = "firmware.bin";
 	const char *firmware_old  = "firmware.cur";
-	FATFS	fat;
-	FIL		file;
+	static FATFS	fat;
+	static FIL		file;
 	
 	printf("Initialize SD card\r\n");
 	SDCard_Init();
@@ -144,7 +144,7 @@ void check_sd_firmware(void)
 	{
 		printf("Flashing firmware: Start!\r\n");
 		
-		uint8_t readbuf[512];
+		static uint8_t readbuf[512];
 		unsigned int readsize = sizeof(readbuf);
 		uint32_t address = USER_FLASH_START;
 		
@@ -156,6 +156,8 @@ void check_sd_firmware(void)
 				return;
 			}
 
+			printf("address: 0x%x, readsize: %d\r\n", address, readsize);
+			
 			setleds((address - USER_FLASH_START) >> 15);
 			write_flash((void *)address, (char *)readbuf, sizeof(readbuf));
 			address += readsize;
@@ -227,22 +229,22 @@ return	(((DWORD)YEAR  & 127) << 25) |
 
 
 void NMI_Handler() {
-// 	printf("NMI\n");
+ 	printf("NMI\n");
 	for (;;);
 }
 void HardFault_Handler() {
-// 	printf("HardFault\n");
+ 	printf("HardFault\n");
 	for (;;);
 }
 void MemManage_Handler() {
-// 	printf("MemManage\n");
+ 	printf("MemManage\n");
 	for (;;);
 }
 void BusFault_Handler() {
-// 	printf("BusFault\n");
+ 	printf("BusFault\n");
 	for (;;);
 }
 void UsageFault_Handler() {
-// 	printf("UsageFault\n");
+ 	printf("UsageFault\n");
 	for (;;);
 }
