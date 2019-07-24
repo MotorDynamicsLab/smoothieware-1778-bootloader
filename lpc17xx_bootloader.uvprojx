@@ -347,7 +347,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>3</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -363,9 +363,9 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>MAX_URI_LENGTH=512,__LPC17XX__,USB_DEVICE_ONLY,APPBAUD=100000</Define>
+              <Define>MAX_URI_LENGTH=512,__LPC177X_8X__,USB_DEVICE_ONLY,DEBUG_MESSAGES</Define>
               <Undefine></Undefine>
-              <IncludePath>CMSISv2p00_LPC17xx\inc;CMSISv2p00_LPC17xx\src;LPC17xxLib\inc;fatfs;.</IncludePath>
+              <IncludePath>CMSISv2p00_LPC17xx\inc;LPC177x_8xLib\inc;fatfs;.</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -429,129 +429,49 @@
           <GroupName>LPCLIB</GroupName>
           <Files>
             <File>
-              <FileName>lpc17xx_adc.c</FileName>
+              <FileName>lpc177x_8x_clkpwr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_adc.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_clkpwr.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_can.c</FileName>
+              <FileName>lpc177x_8x_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_can.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_clkpwr.c</FileName>
+              <FileName>lpc177x_8x_nvic.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_clkpwr.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_nvic.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_dac.c</FileName>
+              <FileName>lpc177x_8x_pinsel.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_dac.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_pinsel.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_debug_frmwrk.c</FileName>
+              <FileName>lpc177x_8x_ssp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_debug_frmwrk.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_ssp.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_emac.c</FileName>
+              <FileName>lpc177x_8x_systick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_emac.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_systick.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_exti.c</FileName>
+              <FileName>lpc177x_8x_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_exti.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_timer.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_gpdma.c</FileName>
+              <FileName>lpc177x_8x_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_gpdma.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_uart.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_gpio.c</FileName>
+              <FileName>lpc177x_8x_wwdt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_i2s.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_i2s.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_libcfg_default.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_libcfg_default.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_mcpwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_mcpwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_nvic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_nvic.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_pinsel.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_pinsel.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_pwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_qei.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_qei.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_rit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_rit.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_ssp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_ssp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_systick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_systick.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_wdt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_wdt.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_wwdt.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -589,11 +509,6 @@
           <GroupName>bootloader</GroupName>
           <Files>
             <File>
-              <FileName>baudfinder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\baudfinder.c</FilePath>
-            </File>
-            <File>
               <FileName>dfu.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\dfu.c</FilePath>
@@ -604,9 +519,9 @@
               <FilePath>.\gpio.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_usb.c</FileName>
+              <FileName>lpc177x_8x_usb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lpc17xx_usb.c</FilePath>
+              <FilePath>.\lpc177x_8x_usb.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
@@ -1004,9 +919,9 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>MAX_URI_LENGTH=512,__LPC17XX__,USB_DEVICE_ONLY,APPBAUD=100000</Define>
+              <Define>MAX_URI_LENGTH=512,__LPC177X_8X__,USB_DEVICE_ONLY</Define>
               <Undefine></Undefine>
-              <IncludePath>CMSISv2p00_LPC17xx\inc;CMSISv2p00_LPC17xx\src;LPC17xxLib\inc;fatfs;.</IncludePath>
+              <IncludePath>.\CMSISv2p00_LPC17xx\inc;.\LPC177x_8xLib\inc;.\fatfs;.</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1070,129 +985,49 @@
           <GroupName>LPCLIB</GroupName>
           <Files>
             <File>
-              <FileName>lpc17xx_adc.c</FileName>
+              <FileName>lpc177x_8x_clkpwr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_adc.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_clkpwr.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_can.c</FileName>
+              <FileName>lpc177x_8x_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_can.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_clkpwr.c</FileName>
+              <FileName>lpc177x_8x_nvic.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_clkpwr.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_nvic.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_dac.c</FileName>
+              <FileName>lpc177x_8x_pinsel.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_dac.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_pinsel.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_debug_frmwrk.c</FileName>
+              <FileName>lpc177x_8x_ssp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_debug_frmwrk.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_ssp.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_emac.c</FileName>
+              <FileName>lpc177x_8x_systick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_emac.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_systick.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_exti.c</FileName>
+              <FileName>lpc177x_8x_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_exti.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_timer.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_gpdma.c</FileName>
+              <FileName>lpc177x_8x_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_gpdma.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_uart.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_gpio.c</FileName>
+              <FileName>lpc177x_8x_wwdt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_i2s.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_i2s.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_libcfg_default.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_libcfg_default.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_mcpwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_mcpwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_nvic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_nvic.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_pinsel.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_pinsel.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_pwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_qei.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_qei.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_rit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_rit.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_ssp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_ssp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_systick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_systick.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>lpc17xx_wdt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LPC17xxLib\src\lpc17xx_wdt.c</FilePath>
+              <FilePath>.\LPC177x_8xLib\src\lpc177x_8x_wwdt.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1230,11 +1065,6 @@
           <GroupName>bootloader</GroupName>
           <Files>
             <File>
-              <FileName>baudfinder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\baudfinder.c</FilePath>
-            </File>
-            <File>
               <FileName>dfu.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\dfu.c</FilePath>
@@ -1245,9 +1075,9 @@
               <FilePath>.\gpio.c</FilePath>
             </File>
             <File>
-              <FileName>lpc17xx_usb.c</FileName>
+              <FileName>lpc177x_8x_usb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lpc17xx_usb.c</FilePath>
+              <FilePath>.\lpc177x_8x_usb.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
