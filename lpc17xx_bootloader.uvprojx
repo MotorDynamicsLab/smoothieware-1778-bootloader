@@ -363,7 +363,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>MAX_URI_LENGTH=512,__LPC177X_8X__,USB_DEVICE_ONLY,DEBUG_MESSAGES</Define>
+              <Define>MAX_URI_LENGTH=512,__LPC177X_8X__,USB_DEVICE_ONLY,APPBAUD=115200,DEBUG_MESSAGES</Define>
               <Undefine></Undefine>
               <IncludePath>CMSISv2p00_LPC17xx\inc;LPC177x_8xLib\inc;fatfs;.</IncludePath>
             </VariousControls>
@@ -919,7 +919,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>MAX_URI_LENGTH=512,__LPC177X_8X__,USB_DEVICE_ONLY</Define>
+              <Define>MAX_URI_LENGTH=512,__LPC177X_8X__,USB_DEVICE_ONLY,APPBAUD=115200</Define>
               <Undefine></Undefine>
               <IncludePath>.\CMSISv2p00_LPC17xx\inc;.\LPC177x_8xLib\inc;.\fatfs;.</IncludePath>
             </VariousControls>
