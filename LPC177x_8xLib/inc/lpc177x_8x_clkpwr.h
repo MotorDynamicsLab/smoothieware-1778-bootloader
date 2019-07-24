@@ -164,7 +164,7 @@ extern "C"
 #define	 CLKPWR_PCONP_PCENET	((uint32_t)(1<<30))
 
 /** USB interface power/clock control bit*/
-#define	 CLKPWR_PCONP_PCUSB  	((uint32_t)(1<<31))
+#define	 CLKPWR_PCONP_PCUSB  	(((uint32_t)1<<31))
 
 /********************************************************************
 * Power Control for Peripherals Definitions
