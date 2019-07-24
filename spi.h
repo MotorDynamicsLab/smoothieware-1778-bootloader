@@ -1,28 +1,9 @@
-#ifndef _SPI_H
-#define _SPI_H
+#ifndef __SPI_H__
+#define __SPI_H__
 
-#include <stdint.h>
+#include "lpc_types.h"
 
-#include "spi_hal.h"
+void SD_SPI_Init(void);
+uint8_t SD_SPI_WriteAndRead(uint8_t data);
 
-#include "pins.h"
-
-
-void SPI_init(PinName mosi, PinName miso, PinName sclk);
-
-void SPI_frequency(uint32_t);
-uint8_t SPI_write(uint8_t);
-
-int SPI_writeblock(uint8_t *, int);
-
-int SPI_can_DMA(void);
-int setup_DMA_rx(DMA_REG *);
-int setup_DMA_tx(DMA_REG *);
-
-void SPI_irq(void);
-
-typedef void (*fptr)(void);
-extern fptr isr_dispatch[N_SPI_INTERRUPT_ROUTINES];
-
-
-#endif /* _SPI_H */
+#endif
