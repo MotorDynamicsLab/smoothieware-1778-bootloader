@@ -20,7 +20,7 @@
 // #include "type.h"
 #include "sbl_iap.h"
 #include "sbl_config.h"
-#include "LPC17xx.h"
+#include "LPC177x_8x.h"
 
 // Provide access to RDB1768 LCD library routines
 // #include "lcd.h"
@@ -173,7 +173,7 @@ void execute_user_code(void)
 
 	// Set user_code_entry to be the address contained in that second word
 	// of user flash
-	user_code_entry = (void *) *p;
+	user_code_entry = (void (*)(void)) *p;
 
 	// Display message to RDB1768 LCD
 // 	LCD_PrintString2Terminal ("Running user\napp from flash.\n", LCD_TERMINAL_NoNL,COLOR_BLUE, COLOR_YELLOW);

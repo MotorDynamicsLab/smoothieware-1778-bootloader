@@ -2,9 +2,11 @@
 #
 #
 
-APPBAUD  = 2000000
+APPBAUD  = 115200
 
 PROJECT  = DFU-Bootloader
+
+CONSOLE  = /dev/arduino
 
 CSRC     = $(wildcard *.c)
 CXXSRC   = $(wildcard *.cpp)
@@ -20,13 +22,13 @@ OUTDIR   = build
 
 OSRC     =
 
-NXPSRC   = $(shell find CMSISv2p00_LPC17xx/ LPC17xxLib/ -name '*.c')
-NXPO     = $(patsubst %.c,$(OUTDIR)/%.o,$(notdir $(NXPSRC))) $(OUTDIR)/system_LPC17xx.o
+NXPSRC   = $(shell find CMSISv2p00_LPC17xx/ LPC177x_8xLib/ -name '*.c')
+NXPO     = $(patsubst %.c,$(OUTDIR)/%.o,$(notdir $(NXPSRC))) $(OUTDIR)/system_LPC177x_8x.o
 
 FATFSSRC = $(shell find fatfs/ -name '*.c')
 FATFSO   = $(patsubst %.c,$(OUTDIR)/%.o,$(notdir $(FATFSSRC)))
 
-CHIP     = lpc1769
+CHIP     = lpc1778
 MCU      = cortex-m3
 
 ARCH     = arm-none-eabi
@@ -51,12 +53,12 @@ RM       = rm -f
 OPTIMIZE = s
 
 #DEBUG_MESSAGES
-CDEFS    = MAX_URI_LENGTH=512 __LPC17XX__ USB_DEVICE_ONLY APPBAUD=$(APPBAUD)
+CDEFS    = MAX_URI_LENGTH=512 __LPC177X_8X__ USB_DEVICE_ONLY APPBAUD=$(APPBAUD)
 
 FLAGS    = -O$(OPTIMIZE) -mcpu=$(MCU) -mthumb -mthumb-interwork -mlong-calls -ffunction-sections -fdata-sections -Wall -g -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 FLAGS   += $(patsubst %,-I%,$(INC))
 FLAGS   += $(patsubst %,-D%,$(CDEFS))
-CFLAGS   = $(FLAGS) -std=gnu99 -pipe -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vfprintf
+CFLAGS   = $(FLAGS) -std=gnu99 -pipe -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vfprintf -fno-builtin-puts
 ASFLAGS  = $(FLAGS)
 CXXFLAGS = $(FLAGS) -fno-rtti -fno-exceptions -std=gnu++0x
 
@@ -91,15 +93,21 @@ clean:
 	@$(RMDIR) $(OUTDIR); true
 
 program: $(OUTDIR)/$(PROJECT).hex
-	lpc21isp $^ /dev/arduino 115200 12000
+	lpc21isp $^ $(CONSOLE) 115200 12000
 
 upload: program
+
+console:
+	@stty raw ignbrk -echo $(APPBAUD) < $(CONSOLE)
+	@echo "Press ctrl+D to exit"
+	@( cat <&3 & cat >&3 ; kill %% ) 3<>$(CONSOLE)
+
 
 # size: $(OUTDIR)/$(PROJECT).elf
 # 	@$(SIZE) $<
 size: $(OUTDIR)/$(PROJECT).elf
 	@echo
-	@echo $$'           \033[1;4m  SIZE        LPC1769         (bootloader)\033[0m'
+	@echo $$'           \033[1;4m  SIZE        LPC1778         (bootloader)\033[0m'
 	@$(OBJDUMP) -h $^ | perl -MPOSIX -ne '/.(text|rodata)\s+([0-9a-f]+)/ && do { $$a += eval "0x$$2" }; END { printf "  FLASH    %6d bytes  %2d%% of %3dkb    %2d%% of %3dkb\n", $$a, ceil($$a * 100 / (512 * 1024)), 512, ceil($$a * 100 / (16 * 1024)), 16 }'
 	@$(OBJDUMP) -h $^ | perl -MPOSIX -ne '/.(data|bss)\s+([0-9a-f]+)/    && do { $$a += eval "0x$$2" }; END { printf "  RAM      %6d bytes  %2d%% of %3dkb\n", $$a, ceil($$a * 100 / ( 16 * 1024)),  16 }'
 

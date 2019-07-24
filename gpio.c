@@ -25,22 +25,20 @@
 
 #include "gpio.h"
 
-#include "LPC17xx.h"
-#include "lpc17xx_pinsel.h"
-#include "lpc17xx_gpio.h"
+#include "LPC177x_8x.h"
+#include "lpc177x_8x_pinsel.h"
+#include "lpc177x_8x_gpio.h"
 
 void GPIO_init(PinName pin) {
-    GPIO_setup(pin);
+	GPIO_Init();
+	GPIO_setup(pin);
 }
 
 void GPIO_setup(PinName pin) {
-	PINSEL_CFG_Type PinCfg;
-	PinCfg.Funcnum = 0;
-	PinCfg.OpenDrain = PINSEL_PINMODE_NORMAL;
-	PinCfg.Pinmode = PINSEL_PINMODE_PULLUP;
-	PinCfg.Portnum = PORT(pin);
-	PinCfg.Pinnum = PIN(pin);
-	PINSEL_ConfigPin(&PinCfg);
+	uint8_t portNum = PORT(pin);
+	uint8_t pinNum = PIN(pin);
+	PINSEL_ConfigPin(portNum, pinNum, 0);
+	PINSEL_SetPinMode(portNum, pinNum, PINSEL_BASICMODE_PULLUP);
 }
 
 void GPIO_set_direction(PinName pin, uint8_t direction) {

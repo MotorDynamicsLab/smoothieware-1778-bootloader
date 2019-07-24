@@ -39,7 +39,7 @@
 
 #define DFU_BLOCK_SIZE 512
 
-#if !(defined DEBUG)
+#ifndef DEBUG_MESSAGES
 #define printf(...) do {} while (0)
 #endif
 
@@ -111,9 +111,15 @@ DFU_APP_Descriptor desc =
 		DT_LANGUAGE,
 		{ SL_USENGLISH }
 	},
+#ifndef __CC_ARM
 	usbstring(12, "SmoothieWare"),
 	usbstring(8 , "Smoothie"),
 	usbstring(12, "Smoothie DFU"),
+#else
+    { 2 + 2 * 12, DT_STRING, 'S', 'm', 'o', 'o', 't', 'h', 'i', 'e', 'W', 'a', 'r', 'e' },
+    { 2 + 2 * 8,  DT_STRING, 'S', 'm', 'o', 'o', 't', 'h', 'i', 'e' },
+    { 2 + 2 * 12, DT_STRING, 'S', 'm', 'o', 'o', 't', 'h', 'i', 'e', ' ', 'D', 'F', 'U' },
+#endif
 	{
 		0,							// bLength
 		0							// bDescType
@@ -176,17 +182,23 @@ DFU_STATUS_t DFU_status = {
 uint8_t block_buffer[DFU_BLOCK_SIZE];
 const uint8_t * flash_p;
 
+#ifndef __CC_ARM
 extern const uint8_t _user_flash_start;
 extern const uint8_t _user_flash_size;
+#else
+// static const uint32_t *_real_flash_size = (uint32_t *)0x7c000;
+const uint8_t _user_flash_start __attribute__((at(0x4000)));
+const uint8_t _user_flash_size __attribute__((at(0x7c000)));
+#endif
 
-#include "LPC17xx.h"
-#include "lpc17xx_usb.h"
+#include "LPC177x_8x.h"
+#include "lpc177x_8x_usb.h"
 
-void DFU_init()
+void DFU_init(void)
 {
 	usb_provideDescriptors(&desc);
 	flash_p = &_user_flash_start;
-// 	printf("user flash: %p\n", flash_p);
+ 	printf("user flash: %p\n", flash_p);
 }
 
 void DFU_GetStatus(CONTROL_TRANSFER *control)
@@ -213,7 +225,7 @@ void DFU_Download(CONTROL_TRANSFER *control)
 
 	if (control->setup.wLength > 0)
 	{
-// 		printf("WRITE: %p\n", flash_p);
+ 		printf("WRITE: %p\n", flash_p);
 		if ((flash_p + control->setup.wLength) <= ((&_user_flash_start) + ((uint32_t)(&_user_flash_size))))
 		{
 			current_state = dfuDNLOADSYNC;
@@ -303,7 +315,7 @@ void DFU_transferComplete(CONTROL_TRANSFER *control)
 		{
 			case DFU_GETSTATUS:
 			{
-				current_state = DFU_status.bState;
+				current_state = (DFU_STATE_enum)DFU_status.bState;
 
 				printf("new state is %d\n", current_state);
 
@@ -357,12 +369,12 @@ void DFU_transferComplete(CONTROL_TRANSFER *control)
 	}
 }
 
-int DFU_complete()
+int DFU_complete(void)
 {
 	return (current_state == dfuMANIFESTWAITRESET);
 }
 
-void USBEvent_busReset()
+void USBEvent_busReset(void)
 {
 	if (current_state == dfuMANIFESTWAITRESET || current_state == dfuMANIFESTSYNC ||current_state == dfuMANIFEST)
 	{

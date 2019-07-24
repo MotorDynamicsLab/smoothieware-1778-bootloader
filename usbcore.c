@@ -26,7 +26,7 @@
 #include "usbcore.h"
 
 #include "usbhw.h"
-#include "lpc17xx_usb.h"
+#include "lpc177x_8x_usb.h"
 #include "dfu.h"
 #include "descriptor.h"
 
@@ -54,13 +54,13 @@ void usb_provideDescriptors(void *d)
 	descriptors = (usbdesc_base *) d;
 }
 
-void requestGetStatus()
+void requestGetStatus(void)
 {
 	control_buffer[0] = control_buffer[1] = 0;
 	control.bufferlen = 2;
 }
 
-void requestGetDescriptor()
+void requestGetDescriptor(void)
 {
 	uint8_t dType = control.setup.wValue >> 8;
 	uint8_t dIndex = control.setup.wValue & 0xFF;
@@ -101,7 +101,7 @@ void requestGetDescriptor()
 				}
 				if (control.bufferlen > control.setup.wLength)
 					control.bufferlen = control.setup.wLength;
-// 				printf("FOUND descriptor 0x%x:0x%x with length %d\n", dType, dIndex, control.bufferlen);
+ 				printf("FOUND descriptor 0x%x:0x%x with length %d\r\n", dType, dIndex, control.bufferlen);
 				return;
 			}
 			i++;
@@ -109,25 +109,25 @@ void requestGetDescriptor()
 
 		d = (usbdesc_base *) (((uint8_t *) d) + d->bLength);
 	}
-// 	printf("descriptor 0x%x:0x%x NOT FOUND\n", dType, dIndex);
+ 	printf("descriptor 0x%x:0x%x NOT FOUND\r\n", dType, dIndex);
 	control.bufferlen = 0;
 	control.zlp = 1;
 }
 
-void requestSetConfiguration()
+void requestSetConfiguration(void)
 {
 	SIE_ConfigureDevice(1);
 }
 
-void requestGetConfiguration()
+void requestGetConfiguration(void)
 {
 	control_buffer[0] = 1;
 	control.bufferlen = 1;
 }
 
-void EP0Complete()
+void EP0Complete(void)
 {
-	printf(" Complete\n");
+	printf(" Complete\r\n");
 	if ((control.setup.bmRequestType & 0x7C) == 0)
 	{
 	}
@@ -137,23 +137,23 @@ void EP0Complete()
 	}
 }
 
-void EP0setup()
+void EP0setup(void)
 {
-// 	printf("SETUP\n");
+ 	printf("SETUP\r\n");
 
-	int l;
-
-	if ((l = usb_read_packet(EP0OUT, &control.setup, 8)) == 8)
+	int l = usb_read_packet(EP0OUT, &control.setup, 8);
+	
+	if (l == 8)
 	{
 		control.complete = 0;
 		control.buffer = control_buffer;
 		control.bufferlen = control.setup.wLength;
 
-// 		printf("bmRequestType: 0x%x\n", control.setup.bmRequestType);
-// 		printf("bRequest     : 0x%x\n", control.setup.bRequest);
-// 		printf("wValue       : 0x%x\n", control.setup.wValue);
-// 		printf("wIndex       : 0x%x\n", control.setup.wIndex);
-// 		printf("wLength      : 0x%x\n", control.setup.wLength);
+ 		printf("bmRequestType: 0x%x\r\n", control.setup.bmRequestType);
+ 		printf("bRequest     : 0x%x\r\n", control.setup.bRequest);
+ 		printf("wValue       : 0x%x\r\n", control.setup.wValue);
+ 		printf("wIndex       : 0x%x\r\n", control.setup.wIndex);
+ 		printf("wLength      : 0x%x\r\n", control.setup.wLength);
 
 		printf("S[0x%x 0x%x 0x%x 0x%x 0x%x]: ", control.setup.bmRequestType, control.setup.bRequest, control.setup.wValue, control.setup.wIndex, control.setup.wLength);
 
@@ -170,7 +170,7 @@ void EP0setup()
 					break;
 				case REQ_SET_ADDRESS:
 					SIE_SetAddress(control.setup.wValue);
-					printf("USB: Got USB Address %d\n", control.setup.wValue);
+					printf("USB: Got USB Address %d\r\n", control.setup.wValue);
 					usb_write_packet(EP0IN, NULL, 0);
 					break;
 				case REQ_GET_DESCRIPTOR:
@@ -194,15 +194,15 @@ void EP0setup()
 			DFU_controlTransfer(&control);
 		}
 	}
-// 	else
-// 	{
-// 		printf("Got a setup packet with size %d\n", l);
-// 	}
+ 	else
+ 	{
+ 		printf("Got a setup packet with size %d\r\n", l);
+ 	}
 }
 
-void EP0in()
+void EP0in(void)
 {
-// 	printf("EP0IN %d (%d)\n", control.complete, control.bufferlen);
+ 	printf("EP0IN %d (%d)\r\n", control.complete, control.bufferlen);
 	if (control.complete == 0)
 	{
 		if (control.setup.bmRequestType_Data_Transfer_Direction == DATA_DIRECTION_DEVICE_TO_HOST)
@@ -213,7 +213,7 @@ void EP0in()
 				if (l > sizeof(control_buffer))
 					l = sizeof(control_buffer);
 				l = usb_write_packet(EP0IN, control.buffer, l);
-// 				printf("W:%d\n", l);
+ 				printf("W:%d\r\n", l);
 				control.bufferlen -= l;
 				control.buffer += l;
 				printf(":w%d", l);
@@ -240,9 +240,9 @@ void EP0in()
 	}
 }
 
-void EP0out()
+void EP0out(void)
 {
-// 	printf("EP0OUT %d (%d)\n", control.complete, control.bufferlen);
+ 	printf("EP0OUT %d (%d)\r\n", control.complete, control.bufferlen);
 	if (control.complete == 0)
 	{
 		if (control.setup.bmRequestType_Data_Transfer_Direction == DATA_DIRECTION_HOST_TO_DEVICE)
