@@ -39,7 +39,7 @@
 
 #define DFU_BLOCK_SIZE 512
 
-#if !(defined DEBUG)
+#ifndef DEBUG_MESSAGES
 #define printf(...) do {} while (0)
 #endif
 
@@ -191,14 +191,14 @@ const uint8_t _user_flash_start __attribute__((at(0x4000)));
 const uint8_t _user_flash_size __attribute__((at(0x7c000)));
 #endif
 
-#include "LPC17xx.h"
-#include "lpc17xx_usb.h"
+#include "LPC177x_8x.h"
+#include "lpc177x_8x_usb.h"
 
 void DFU_init(void)
 {
 	usb_provideDescriptors(&desc);
 	flash_p = &_user_flash_start;
-// 	printf("user flash: %p\n", flash_p);
+ 	printf("user flash: %p\n", flash_p);
 }
 
 void DFU_GetStatus(CONTROL_TRANSFER *control)
@@ -225,7 +225,7 @@ void DFU_Download(CONTROL_TRANSFER *control)
 
 	if (control->setup.wLength > 0)
 	{
-// 		printf("WRITE: %p\n", flash_p);
+ 		printf("WRITE: %p\n", flash_p);
 		if ((flash_p + control->setup.wLength) <= ((&_user_flash_start) + ((uint32_t)(&_user_flash_size))))
 		{
 			current_state = dfuDNLOADSYNC;
@@ -315,7 +315,7 @@ void DFU_transferComplete(CONTROL_TRANSFER *control)
 		{
 			case DFU_GETSTATUS:
 			{
-				current_state = DFU_status.bState;
+				current_state = (DFU_STATE_enum)DFU_status.bState;
 
 				printf("new state is %d\n", current_state);
 

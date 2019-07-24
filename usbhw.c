@@ -25,15 +25,15 @@
 
 #include "usbhw.h"
 
-#include <LPC17xx.h>
+#include <LPC177x_8x.h>
 
-#include <lpc17xx_clkpwr.h>
+#include <lpc177x_8x_clkpwr.h>
 
-#include "lpc17xx_usb.h"
+#include "lpc177x_8x_usb.h"
 
 #include <stdio.h>
 
-#if !(defined DEBUG)
+#ifndef DEBUG_MESSAGES
 #define printf(...) do {} while (0)
 #endif
 
@@ -42,23 +42,24 @@ usb_callback_pointer EPcallbacks[30];
 
 void usb_init(void)
 {
-	// enable USB hardware
-	LPC_SC->PCONP |= CLKPWR_PCONP_PCUSB;
+	/* P0.29 D1+, P0.30 D1- */
+  LPC_IOCON->P0_29 &= ~0x07;    
+  LPC_IOCON->P0_29 |= 0x1;
+  LPC_IOCON->P0_30 &= ~0x07;
+  LPC_IOCON->P0_30 |= 0x1;
 
-	// enable clocks
-	LPC_USB->USBClkCtrl |= DEV_CLK_EN | AHB_CLK_EN;
-	// wait for clocks to stabilise
-	while (LPC_USB->USBClkSt != (DEV_CLK_ON | AHB_CLK_ON));
+	/* USB_SoftConnect */
+  LPC_IOCON->P2_9  &= ~0x07;    
+  LPC_IOCON->P2_9  |= 0x1;
 
-	// configure USBD+ and USBD-
-	LPC_PINCON->PINSEL1 &= 0xc3ffffff;
-	LPC_PINCON->PINSEL1 |= 0x14000000;
-
+	/* USB PCLK -> enable USB Per. */
+  LPC_SC->PCONP |= (1UL<<31); 
+	
+	/* Dev, AHB clock enable */
+  LPC_USB->USBClkCtrl =  0x12|(1<<2); 
+  while ((LPC_USB->USBClkSt & 0x12) != 0x12);
+	
 	SIE_Disconnect();
-
-	// configure USB Connect
-	LPC_PINCON->PINSEL4 &= 0xfffcffff;
-	LPC_PINCON->PINSEL4 |= 0x00040000;
 }
 
 void usb_connect(void)
@@ -106,7 +107,7 @@ int usb_read_packet(uint8_t bEP, void *buffer, int buffersize)
 
 	if (l > buffersize)
 	{
-// 		printf("Not enough room in buffer (got %d need %d), failing to read\n", buffersize, l);
+		printf("Not enough room in buffer (got %d need %d), failing to read\r\n", buffersize, l);
 		__enable_irq();
 		return l;
 	}
@@ -193,7 +194,7 @@ void usb_task(void)
 {
 	if (LPC_USB->USBDevIntSt & FRAME)
 	{
-// 		USBEvent_Frame(SIEgetFrameNumber());
+ 		//USBEvent_Frame(SIEgetFrameNumber());
 		LPC_USB->USBDevIntClr = FRAME;
 	}
 	if (LPC_USB->USBDevIntSt & DEV_STAT)
@@ -204,13 +205,13 @@ void usb_task(void)
 
 		if (devStat & SIE_DEVSTAT_SUS_CH)
 		{
-// 			USBEvent_suspendStateChanged(devStat & SIE_DEVSTAT_SUS);
-// 			printf("USB:Suspend\n");
+ 			//USBEvent_suspendStateChanged(devStat & SIE_DEVSTAT_SUS);
+ 			printf("USB:Suspend\r\n");
 		}
 
 		if (devStat & SIE_DEVSTAT_RST)
 		{
-			printf("USB:Bus Reset\n");
+			printf("USB:Bus Reset\r\n");
 			USBEvent_busReset();
 
 			usb_realise_endpoint(EP0IN , 64);
@@ -221,34 +222,34 @@ void usb_task(void)
 
 		if (devStat & SIE_DEVSTAT_CON_CH)
 		{
-// 			printf("USB:Connect\n");
+ 			printf("USB:Connect\r\n");
 // 			USBEvent_connectStateChanged(devStat & SIE_DEVSTAT_CON);
 		}
 	}
 	if (LPC_USB->USBDevIntSt & EP_SLOW)
 	{
 		int st = LPC_USB->USBEpIntSt;
-// 		printf("INTST: %x\n", st);
+ 		printf("INTST: %x\r\n", st);
 		if (st & EP(EP0OUT))
 		{
 			int st;
 			if ((st = SIE_SelectEndpointClearInterrupt(EP0OUT)) & SIE_EP_STP) // SETUP packet
 			{
-// 				printf("EP0SETUP_ST: 0x%x\n", st);
+ 				printf("EP0SETUP_ST: 0x%x\r\n", st);
 				// this is a setup packet
 				EP0setup();
 			}
 			else if (st & SIE_EP_FE) // OUT endpoint and FE = 1 (buffer has data)
 			{
-// 				printf("EP0OUT_ST: 0x%x\n", st);
+ 				printf("EP0OUT_ST: 0x%x\r\n", st);
 				EP0out();
 			}
 			else // EP0OUT, FE = 0 (no data) - why are we interrupting?
 			{
 				uint8_t b[8];
-// 				int l = usb_read_packet(EP0OUT, b, 8);
+ 				int l = usb_read_packet(EP0OUT, b, 8);
 				usb_read_packet(EP0OUT, b, 8);
-// 				printf("EP0OUT: spurious interrupt (0x%x, %d)\n", st, l);
+ 				printf("EP0OUT: spurious interrupt (0x%x, %d)\r\n", st, l);
 			}
 		}
 		if (st & EP(EP0IN))
@@ -256,8 +257,8 @@ void usb_task(void)
 			int st = SIE_SelectEndpointClearInterrupt(EP0IN);
 			if ((st & SIE_EP_FE) == 0)
 				EP0in();
-// 			else
-// 				printf("Interrupt on EP0IN: FE:%d ST:%d STP:%d PO:%d EPN:%d B1:%d B2:%d\n", st & 1, (st >> 1) & 1, (st >> 2) & 1, (st >> 3) & 1, (st >> 4) & 1, (st >> 5) & 1, (st >> 6) & 1);
+ 			else
+ 				printf("Interrupt on EP0IN: FE:%d ST:%d STP:%d PO:%d EPN:%d B1:%d B2:%d\r\n", st & 1, (st >> 1) & 1, (st >> 2) & 1, (st >> 3) & 1, (st >> 4) & 1, (st >> 5) & 1, (st >> 6) & 1);
 		}
 		if (st & ~(3UL))
 		{
