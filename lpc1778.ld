@@ -35,9 +35,9 @@ MEMORY
 	userom(rx): ORIGIN = 16k, LENGTH = (512k - 16k)
 /* 	rom (rx)  : ORIGIN = 16K, LENGTH = (512K - 16K) /* Bootloader uses first 16Kbytes of flash memory */
 	/* rom (rx)  : ORIGIN = 0, LENGTH = 512K /**/
-	ram (rwx) : ORIGIN = 0x10000000, LENGTH =  32K - 32 /* don't use last 32 bytes- they're used by IAP during flash programming */
-	ahbb0(rw) : ORIGIN = 0x2007C000, LENGTH =  16K
-	ahbb1(rw) : ORIGIN = 0x20080000, LENGTH =  16K
+	ram (rwx) : ORIGIN = 0x10000000, LENGTH =  64K - 32 /* don't use last 32 bytes- they're used by IAP during flash programming */
+	ahbb0(rw) : ORIGIN = 0x20000000, LENGTH =  16K
+	ahbb1(rw) : ORIGIN = 0x20004000, LENGTH =  16K
 }
 
 /* These force the linker to search for particular symbols from
