@@ -173,6 +173,46 @@ void check_sd_firmware(void)
 	}
 }
 
+// this seems to fix an issue with handoff after poweroff
+// found here http://knowledgebase.nxp.trimm.net/showthread.php?t=2869
+typedef void __attribute__((noreturn))(*exec)();
+
+static void boot(uint32_t a)
+{
+    uint32_t *start;
+
+    __set_MSP(*(uint32_t *)USER_FLASH_START);
+    start = (uint32_t *)(USER_FLASH_START + 4);
+    ((exec)(*start))();
+}
+
+static uint32_t delay_loop(uint32_t count)
+{
+	volatile uint32_t j, del;
+	for(j=0; j<count; ++j){
+		del=j; // volatiles, so the compiler will not optimize the loop
+	}
+	return del;
+}
+
+static void new_execute_user_code(void)
+{
+	uint32_t addr=(uint32_t)USER_FLASH_START;
+	
+	// relocate vector table
+	SCB->VTOR = (addr & 0x1FFFFF80);
+	
+	delay_loop(1000);
+	
+	// reset pipeline, sync bus and memory access
+	__asm (
+		   "dmb\n"
+		   "dsb\n"
+		   "isb\n"
+		  );
+	boot(addr);
+}
+
 int main(void)
 {
 	WWDT_Feed();
@@ -201,7 +241,7 @@ int main(void)
 
 	//Jump to application
 	printf("Jump!\r\n");
-	execute_user_code();
+	new_execute_user_code();
 
   Uart_Init(APPBAUD);
 	printf("This should never happen\r\n");
