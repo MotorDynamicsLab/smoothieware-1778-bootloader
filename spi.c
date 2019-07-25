@@ -19,7 +19,7 @@ void SD_SPI_Init(void)
 	SSP_CFG_Type SSP_ConfigStruct;
 	// initialize SSP configuration structure to default
 	SSP_ConfigStructInit(&SSP_ConfigStruct);
-	// SSP_ConfigStruct.ClockRate = 1000000;
+	SSP_ConfigStruct.ClockRate = 4000000;
 	// Initialize SSP peripheral with parameter given in structure above
 	SSP_Init(SD_SSP, &SSP_ConfigStruct);
 	// Enable SD_SSP peripheral
